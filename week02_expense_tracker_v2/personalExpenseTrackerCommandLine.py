@@ -6,12 +6,21 @@ print("haha")
 
 while True:
     print('wowoow')
-    userInput = input("Input expense (type clear to clear)(amt|cat|note)(-1 to stop input): ")
+    userInput = input("Input expense (type clear to clear)(amt|cat|note)(-1 to stop input)(d for expense editor): ")
     if userInput == '-1':
+        break
+    if userInput.lower() == 'd':
         break
 
     if userInput.lower() == "clear":
-        with open("personalExpenseTrackerCommandLineTxtFile.txt", "w") as file:
+        confirmation = input("Confirm to clear all expenses (y/n)")
+        try:
+            if confirmation.lower() == 'y':
+                with open("personalExpenseTrackerCommandLineTxtFile.txt", "w") as file:
+                    pass
+            elif confirmation.lower() == 'n':
+                pass
+        except Exception as e:
             pass
     else:
         with open("personalExpenseTrackerCommandLineTxtFile.txt", "a") as file:
@@ -64,6 +73,21 @@ def displaySpecificExpenses():
     print("Category Totals:")
     for category, total in categoryTotals.items():
         print(f"{category}: {total}")
+
+def deleteExpense():
+    lines = readFile()
+    for line in lines:
+        print(line)
+    delete = input("Input price|cat|note to delete: ")
+    try:
+        for line in lines:
+            if line == delete:
+                with open("personalExpenseTrackerCommandLineTxtFile.txt", "w") as file:
+                    for line in lines:
+                        if line != delete:
+                            file.write(line)
+    except Exception as e:
+        print("Line does not exist! ")
 
 
 displaySpecificExpenses()
