@@ -2,10 +2,8 @@ import sys
 
 expenses = []
 
-print("haha")
 deleteMode = False
 while True:
-    print('wowoow')
     userInput = input("Input expense (type clear to clear)(amt|cat|note)(-1 to stop input)(d for expense editor): ")
 
     if userInput == '-1':
