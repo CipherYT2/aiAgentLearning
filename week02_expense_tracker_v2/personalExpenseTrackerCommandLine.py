@@ -3,13 +3,16 @@ import sys
 expenses = []
 
 print("haha")
-
+deleteMode = False
 while True:
     print('wowoow')
     userInput = input("Input expense (type clear to clear)(amt|cat|note)(-1 to stop input)(d for expense editor): ")
+
     if userInput == '-1':
         break
+
     if userInput.lower() == 'd':
+        deleteMode = True
         break
 
     if userInput.lower() == "clear":
@@ -23,8 +26,9 @@ while True:
         except Exception as e:
             pass
     else:
-        with open("personalExpenseTrackerCommandLineTxtFile.txt", "a") as file:
-            file.write(userInput + "\n")
+        if userInput != '-1' and userInput != "clear":
+            with open("personalExpenseTrackerCommandLineTxtFile.txt", "a") as file:
+                file.write(userInput + "\n")
             
 def readFile():
     with open("personalExpenseTrackerCommandLineTxtFile.txt", "a") as file:
@@ -81,14 +85,16 @@ def deleteExpense():
     delete = input("Input price|cat|note to delete: ")
     try:
         for line in lines:
-            if line == delete:
+            if line.rstrip() == delete:
                 with open("personalExpenseTrackerCommandLineTxtFile.txt", "w") as file:
                     for line in lines:
-                        if line != delete:
+                        if line.rstrip() != delete:
                             file.write(line)
     except Exception as e:
         print("Line does not exist! ")
 
-
-displaySpecificExpenses()
-displayExpenses()
+if deleteMode == False:
+    displaySpecificExpenses()
+    displayExpenses()
+else:
+    deleteExpense()
