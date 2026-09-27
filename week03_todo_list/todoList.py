@@ -11,7 +11,7 @@ def readFile():
     return lines
 
 for line in readFile():
-    tasks[line.split(', ')[0]] = line.split(', ')[1]
+        tasks[line.split(', ')[0]] = line.split(', ')[1]
 
 try:
     while(True):
@@ -19,7 +19,7 @@ try:
 
         if mode == '1':
             tasks[input("Task: ")] = False
-            with open("todoListStorage.txt", "a") as file:
+            with open("todoListStorage.txt", "w") as file:
                 for key in tasks:
                     file.write(key + f", {tasks[key]} \n")
             

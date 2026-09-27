@@ -1,12 +1,2 @@
-a, False 
-a, False 
-b, False 
-a, False 
 b, False 
 c, False 
-a, False 
-a, False 
- 
-b, False 
-c, False 
- 
