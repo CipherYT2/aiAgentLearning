@@ -2,33 +2,39 @@ import requests
 import ollama
 from geopy.geocoders import Nominatim
 import json
-
-
-
-with open("favoriteCities.json", 'a'):
-    pass
+import sys
 
 
 geolocator = Nominatim(user_agent="city_coordinates_app")
-mode = input("1. Manually choose city \n2. Choose From favorites\n Input:")
+mode = input("1. Manually choose city \n2. Choose From favorites \n3. Clear Favorites \nInput:")
 if mode == '1':
     city = input("Input your city: ")
     if input("Do you want to add this to favorites? (y/n)") == 'y':
-        with open("favoriteCities.json", "r") as file:
+        with open("/Users/OL/agentProjects/aiAgentLearning/week06_improveWeatherCommandLine/favoriteCities.json", 'r', encoding="utf-8") as file:
             add = json.load(file)
+            print(add)
         add.append(city)
-        with open("favoriteCities", 'w') as file:
+        with open("/Users/OL/agentProjects/aiAgentLearning/week06_improveWeatherCommandLine/favoriteCities.json", 'w', encoding="utf-8") as file:
             json.dump(add, file)
 if mode == '2':
-    with open("favoriteCities.json", 'r') as file:
+    with open("/Users/OL/agentProjects/aiAgentLearning/week06_improveWeatherCommandLine/favoriteCities.json", 'r', encoding="utf-8") as file:
         fav = json.load(file)
-        ct = 0
-        print("Your favorites: \n")
-        for item in fav:
-            print(f"{ct}. {item}")
-        chosenFav = input("Choose Number: ")
-        city = file[chosenFav]
-
+        if len(fav) > 0:
+            ct = 0
+            print("Your favorites: ")
+            for item in fav:
+                print(f"{ct}. {item}")
+                ct += 1
+            chosenFav = int(input("\nChoose Number: "))
+            city = fav[chosenFav]
+        else:
+            print("No favorites found.")
+            sys.exit(0)
+if mode == '3':
+    if input("Confirm deleting all favorites(y/n)").lower() == 'y':
+        with open("/Users/OL/agentProjects/aiAgentLearning/week06_improveWeatherCommandLine/favoriteCities.json", 'w', encoding='utf-8') as file:
+            json.dump([], file)
+            sys.exit(0)
 
 
 location = geolocator.geocode(city)
@@ -55,7 +61,7 @@ d3weather = f"{data["list"][15]["weather"][0]["description"]}"
 
 print(f"\nTodays forecast: temp: {round((d1temp - 273.15), 2)}°C \nweather: {d1weather}")
 print(f"\nTommorow's forecast: temp: {round((d2temp - 273.15), 2)}°C \nweather: {d2weather}")
-print(f"\nThe day after's forecast: temp: {round((d3temp - 273.15), 2)}°C \n weather: {d3weather}")
+print(f"\nThe day after's forecast: temp: {round((d3temp - 273.15), 2)}°C \n weather: {d3weather}\n")
 
 def giveWeatherAdvice(weather):
     stream = ollama.chat(
