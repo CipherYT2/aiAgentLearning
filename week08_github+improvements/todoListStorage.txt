@@ -1,0 +1,3 @@
+Eat, False 
+Hello, True 
+eeeat, True 
